@@ -1,0 +1,85 @@
+:root {
+  --background: #ffffff;
+  --foreground: #161616;
+  --primary: #f6851b;
+  --primary-hover: #e2761b;
+  --secondary: #24292e;
+  --muted: #6a737d;
+  --accent: #037dd6; /* MetaMask Blue */
+  --card: rgba(255, 255, 255, 0.8);
+  --glass: rgba(255, 255, 255, 0.6);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --radius: 16px;
+  --border: #e6ebf1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #161616;
+    --foreground: #ffffff;
+    --primary: #f6851b;
+    --card: rgba(36, 41, 46, 0.8);
+    --glass: rgba(36, 41, 46, 0.6);
+    --border: #30363d;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: 'Google Sans', sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+/* MetaMask Button style */
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  padding: 8px 24px;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(246, 133, 27, 0.3);
+}
+
+/* Masonry Items */
+.pin-card {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.pin-card:hover {
+  transform: scale(1.02);
+}
