@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google"; // Using Outfit as a close, high-quality alternative to Google Sans
 import "./globals.css";
 
+import { SolanaProvider } from "@/components/SolanaProvider";
+
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
@@ -20,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.variable} font-sans antialiased`}>
-        {children}
+        <SolanaProvider>
+          {children}
+        </SolanaProvider>
       </body>
     </html>
   );
