@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check-client-boundaries": "node scripts/validate-client-boundaries.js"
   },
   "dependencies": {
     "@libsql/client": "^0.17.0",
@@ -21,9 +22,9 @@
     "bs58": "^6.0.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.563.0",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
+    "next": "14.3.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-intersection-observer": "^10.0.2",
     "tailwind-merge": "^3.4.0",
     "uuid": "^13.0.0"
