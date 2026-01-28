@@ -2,6 +2,8 @@ import Navbar from "@/components/Navbar";
 import MasonryGrid from "@/components/MasonryGrid";
 import { getPins } from "@/lib/actions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home({
   searchParams,
 }: {
