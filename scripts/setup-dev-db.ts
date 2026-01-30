@@ -1,6 +1,6 @@
 
 import { initDb } from '../lib/schema';
-import { db } from '../lib/db';
+import { getDb } from '../lib/db';
 
 async function main() {
     try {
@@ -9,6 +9,7 @@ async function main() {
         console.log('Database initialized successfully.');
 
         // Verify by listing tables
+        const db = getDb();
         const result = await db.execute("SELECT name FROM sqlite_master WHERE type='table'");
         console.log('Tables created:', result.rows.map(r => r.name));
     } catch (error) {
