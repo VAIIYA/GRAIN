@@ -5,6 +5,7 @@ const path = require('path');
 
 function walk(dir, acc = []) {
   for (const name of fs.readdirSync(dir)) {
+    if (name === 'node_modules') continue; // Skip node_modules
     const full = path.join(dir, name);
     const st = fs.statSync(full);
     if (st.isDirectory()) walk(full, acc);
