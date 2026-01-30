@@ -1,6 +1,10 @@
-import { db } from './db';
+'use server';
+
+import { getDb } from './db';
 
 export async function initDb() {
+  const db = getDb();
+  
   await db.execute(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
