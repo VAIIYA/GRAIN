@@ -114,15 +114,15 @@ export default function PinCard({ pin }: { pin: Pin }) {
                 )}
             </div>
 
-            <div className="mt-2 px-1">
-                <h3 className="font-semibold text-sm truncate">{pin.title}</h3>
-                <div className="flex items-center gap-2 mt-1">
+            <div className="mt-3 px-2">
+                <h3 className="font-semibold text-white text-sm truncate">{pin.title}</h3>
+                <div className="flex items-center gap-2 mt-2">
                     {pin.owner_image ? (
-                        <Image src={pin.owner_image} alt={pin.owner_name} width={24} height={24} className="rounded-full" />
+                        <Image src={pin.owner_image} alt={pin.owner_name} width={28} height={28} className="rounded-full border border-white/10" />
                     ) : (
-                        <div className="w-6 h-6 bg-gray-200 rounded-full" />
+                        <div className="w-7 h-7 bg-gradient-to-br from-[#f6851b]/20 to-[#e2761b]/20 rounded-full border border-white/10" />
                     )}
-                    <span className="text-xs text-gray-600 hover:underline cursor-pointer font-medium">{pin.owner_name}</span>
+                    <span className="text-xs text-gray-400 hover:text-[#f6851b] cursor-pointer font-medium transition-colors">{pin.owner_name}</span>
                 </div>
             </div>
         </div>
