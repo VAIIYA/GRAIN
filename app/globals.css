@@ -270,6 +270,46 @@ h6 {
   background: linear-gradient(90deg, transparent, rgba(33, 52, 83, 0.15), transparent);
 }
 
+.page-section {
+  padding: 28px 24px;
+}
+
+.card-surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  box-shadow: var(--shadow-card);
+}
+
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-footer {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.safe-bottom {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+}
+
+@media (max-width: 640px) {
+  .page-section {
+    padding: 24px 18px;
+  }
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
