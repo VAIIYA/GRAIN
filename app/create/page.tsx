@@ -24,10 +24,10 @@ export default function CreatePin() {
 
         setUploading(true);
         try {
-            const newBlob = await upload(file.name, file, {
+            const uniqueName = `${Date.now()}-${file.name}`;
+            const newBlob = await upload(uniqueName, file, {
                 access: 'public',
                 handleUploadUrl: '/api/upload',
-                addRandomSuffix: true,
             });
 
             const tagList = hashtags.split(' ')
