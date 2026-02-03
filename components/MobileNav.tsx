@@ -16,7 +16,7 @@ export default function MobileNav() {
     ];
 
     return (
-        <nav className="glass-nav flex items-center justify-around py-2 px-2">
+        <nav className="glass-nav flex items-center justify-around py-3 px-4">
             {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
@@ -25,11 +25,13 @@ export default function MobileNav() {
                     <Link
                         key={item.label}
                         href={item.href}
-                        className={`flex flex-col items-center p-2 rounded-lg transition-colors ${isActive ? 'text-white' : 'text-muted hover:text-white'
+                        className={`flex flex-col items-center transition-all duration-300 ${isActive ? 'text-[#FF5C16]' : 'text-[#3D065F]/40 hover:text-[#3D065F]'
                             }`}
                     >
-                        <Icon className={`w-6 h-6 ${isActive ? 'fill-current' : ''}`} />
-                        <span className="text-[10px] mt-1 font-medium">{item.label}</span>
+                        <div className={`p-1.5 rounded-xl transition-colors ${isActive ? 'bg-[#FF5C16]/10' : ''}`}>
+                            <Icon className={`w-6 h-6 ${isActive ? 'fill-current' : ''}`} />
+                        </div>
+                        <span className="text-[10px] mt-1 font-bold uppercase tracking-wider">{item.label}</span>
                     </Link>
                 );
             })}

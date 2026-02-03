@@ -58,17 +58,17 @@ export default function PinCard({ pin }: { pin: Pin }) {
     };
 
     return (
-        <article className="post-card animate-fade-in">
+        <article className="post-card animate-fade-in bg-white">
             {/* Header */}
-            <div className="flex items-center justify-between p-3">
+            <div className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3">
-                    <div className="relative w-9 h-9">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-[#f09433] to-[#bc1888] rounded-full p-[1.5px]">
-                            <div className="bg-black rounded-full h-full w-full flex items-center justify-center overflow-hidden border-[1.5px] border-black">
+                    <div className="relative w-10 h-10">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-[#FF5C16] to-[#3D065F] rounded-full p-[2px]">
+                            <div className="bg-white rounded-full h-full w-full flex items-center justify-center overflow-hidden border-[2px] border-white">
                                 {pin.owner_image ? (
-                                    <Image src={pin.owner_image} alt={pin.owner_name} width={36} height={36} className="object-cover" />
+                                    <Image src={pin.owner_image} alt={pin.owner_name} width={40} height={40} className="object-cover" />
                                 ) : (
-                                    <div className="w-full h-full bg-secondary flex items-center justify-center text-[10px] font-bold text-muted">
+                                    <div className="w-full h-full bg-[#F7F9FC] flex items-center justify-center text-[10px] font-bold text-[#3D065F]">
                                         {pin.owner_name?.slice(0, 2).toUpperCase()}
                                     </div>
                                 )}
@@ -76,21 +76,21 @@ export default function PinCard({ pin }: { pin: Pin }) {
                         </div>
                     </div>
                     <div>
-                        <div className="flex items-center gap-1">
-                            <span className="text-sm font-bold text-white hover:underline cursor-pointer">{pin.owner_name || 'Anonymous'}</span>
-                            <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-500" />
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-sm font-bold text-[#0A0A0A] hover:text-[#FF5C16] cursor-pointer transition-colors">{pin.owner_name || 'Anonymous'}</span>
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#FF5C16] fill-[#FF5C16]/10" />
                         </div>
-                        <p className="text-[10px] text-muted">Solana Chain • 2h ago</p>
+                        <p className="text-[10px] text-muted font-medium uppercase tracking-wider">Solana Network</p>
                     </div>
                 </div>
-                <button className="btn-ghost p-1">
-                    <MoreHorizontal className="w-5 h-5 text-muted" />
+                <button className="btn-ghost p-1.5 hover:bg-[#F7F9FC]">
+                    <MoreHorizontal className="w-5 h-5 text-[#3D065F]/40" />
                 </button>
             </div>
 
             {/* Content (Image) */}
-            <div className="post-image-container group">
-                <div className={isLocked ? 'blur-2xl scale-110 grayscale transition-all duration-700' : 'transition-all duration-700'}>
+            <div className="post-image-container group border-y border-[#F7F9FC]">
+                <div className={isLocked ? 'blur-3xl scale-110 grayscale transition-all duration-1000' : 'transition-all duration-700'}>
                     <Image
                         src={pin.image_url}
                         alt={pin.title}
@@ -102,19 +102,19 @@ export default function PinCard({ pin }: { pin: Pin }) {
                 </div>
 
                 {isLocked && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-6">
-                        <div className="glass p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-[240px] border border-white/10">
-                            <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center text-white backdrop-blur-md">
-                                <Lock className="w-7 h-7" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-6 bg-white/10 backdrop-blur-sm">
+                        <div className="bg-white/90 backdrop-blur-md p-8 rounded-[32px] shadow-2xl flex flex-col items-center gap-4 max-w-[260px] border border-white">
+                            <div className="w-16 h-16 bg-[#FF5C16]/10 rounded-full flex items-center justify-center text-[#FF5C16]">
+                                <Lock className="w-8 h-8" />
                             </div>
                             <div className="text-center">
-                                <h4 className="text-lg font-bold text-white">Exclusive Post</h4>
-                                <p className="text-xs text-muted mt-1 px-2">Support the creator to unlock this content</p>
+                                <h4 className="text-lg font-serif text-[#3D065F]">Exclusive Post</h4>
+                                <p className="text-xs text-muted mt-1 leading-relaxed">Join the community to unlock this unique creator content.</p>
                             </div>
                             <button
                                 onClick={handleUnlock}
                                 disabled={unlocking}
-                                className="w-full btn-premium leading-none text-sm py-3 disabled:opacity-50"
+                                className="w-full btn-premium py-4 text-sm font-bold"
                             >
                                 {unlocking ? 'Verifying...' : `Unlock for ${pin.price} USDC`}
                             </button>
@@ -124,40 +124,38 @@ export default function PinCard({ pin }: { pin: Pin }) {
             </div>
 
             {/* Actions */}
-            <div className="p-3">
-                <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-4">
-                        <button onClick={() => setLiked(!liked)} className={`${liked ? 'text-red-500' : 'text-white'} transition-colors`}>
+            <div className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-5">
+                        <button onClick={() => setLiked(!liked)} className={`${liked ? 'text-[#FF5C16]' : 'text-[#3D065F]'} transition-all hover:scale-110 active:scale-95`}>
                             <Heart className={`w-7 h-7 ${liked ? 'fill-current' : ''}`} />
                         </button>
-                        <button className="text-white hover:text-muted">
+                        <button className="text-[#3D065F] hover:text-[#FF5C16] transition-all hover:scale-110">
                             <MessageCircle className="w-7 h-7" />
                         </button>
-                        <button className="text-white hover:text-muted">
+                        <button className="text-[#3D065F] hover:text-[#FF5C16] transition-all hover:scale-110">
                             <Send className="w-7 h-7" />
                         </button>
                     </div>
-                    <button className="text-white hover:text-muted">
+                    <button className="text-[#3D065F] hover:text-[#FF5C16] transition-all hover:scale-110">
                         <Bookmark className="w-7 h-7" />
                     </button>
                 </div>
 
                 {/* Likes/Status */}
-                <p className="text-sm font-bold text-white mb-2">1,240 likes</p>
+                <p className="text-sm font-bold text-[#0A0A0A] mb-2.5">1,240 people like this</p>
 
                 {/* Caption */}
-                <div className="space-y-1">
-                    <p className="text-sm leading-relaxed">
-                        <span className="font-bold mr-2">{pin.owner_name || 'Anonymous'}</span>
-                        {pin.title}
+                <div className="space-y-1.5">
+                    <h3 className="text-sm font-serif text-[#3D065F] italic mb-1">{pin.title}</h3>
+                    <p className="text-sm leading-relaxed text-[#0A0A0A]">
+                        <span className="font-bold mr-2 text-[#3D065F]">{pin.owner_name || 'Anonymous'}</span>
+                        {pin.description || "The future belongs to those who believe in the beauty of their dreams."}
                     </p>
-                    {pin.description && (
-                        <p className="text-sm text-muted line-clamp-2">{pin.description}</p>
-                    )}
                 </div>
 
                 {/* Date */}
-                <p className="text-[10px] text-muted uppercase mt-3 tracking-wider font-medium">February 3</p>
+                <p className="text-[10px] text-muted uppercase mt-4 tracking-widest font-bold">February 3, 2026</p>
             </div>
         </article>
     );
