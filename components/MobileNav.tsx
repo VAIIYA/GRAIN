@@ -25,10 +25,10 @@ export default function MobileNav() {
                     <Link
                         key={item.label}
                         href={item.href}
-                        className={`flex flex-col items-center transition-all duration-300 ${isActive ? 'text-[#FF5C16]' : 'text-[#3D065F]/40 hover:text-[#3D065F]'
+                        className={`flex flex-col items-center transition-all duration-300 ${isActive ? 'text-[#FF6A3D]' : 'text-[#213453]/40 hover:text-[#213453]'
                             }`}
                     >
-                        <div className={`p-1.5 rounded-xl transition-colors ${isActive ? 'bg-[#FF5C16]/10' : ''}`}>
+                        <div className={`p-1.5 rounded-xl transition-colors ${isActive ? 'bg-[#FF6A3D]/10' : ''}`}>
                             <Icon className={`w-6 h-6 ${isActive ? 'fill-current' : ''}`} />
                         </div>
                         <span className="text-[10px] mt-1 font-bold uppercase tracking-wider">{item.label}</span>

@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, Poly } from "next/font/google";
+import { Space_Grotesk, Fraunces } from "next/font/google";
 import "./globals.css";
 
 import { SolanaProvider } from "@/components/SolanaProvider";
 import MobileNav from "@/components/MobileNav";
 
-const inter = Inter({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
 });
 
-const poly = Poly({
-  weight: "400",
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-poly",
+  variable: "--font-display",
+  weight: ["400", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -28,8 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${poly.variable} font-sans antialiased bg-[#F7F9FC] text-[#0A0A0A] min-h-screen`}>
-        <div className="app-container pb-20">
+      <body className={`${spaceGrotesk.variable} ${fraunces.variable} antialiased min-h-screen`}>
+        <div className="page-ambient" aria-hidden="true">
+          <div className="ambient-orb orb-a" />
+          <div className="ambient-orb orb-b" />
+          <div className="ambient-grid" />
+        </div>
+        <div className="app-container pb-24">
           <SolanaProvider>
             {children}
             <MobileNav />

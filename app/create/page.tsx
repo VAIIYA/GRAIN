@@ -58,16 +58,16 @@ export default function CreatePin() {
             <main className="min-h-screen">
                 <Navbar />
                 <div className="flex flex-col items-center justify-center pt-32 px-10 text-center">
-                    <div className="w-24 h-24 bg-[#FF5C16]/10 rounded-full flex items-center justify-center mb-8">
-                        <Sparkles className="w-12 h-12 text-[#FF5C16]" />
+                    <div className="w-24 h-24 bg-[#FF6A3D]/10 rounded-full flex items-center justify-center mb-8">
+                        <Sparkles className="w-12 h-12 text-[#FF6A3D]" />
                     </div>
-                    <h1 className="text-2xl font-serif text-[#3D065F] mb-3">Join the movement</h1>
+                    <h1 className="text-2xl font-serif text-[#213453] mb-3">Join the movement</h1>
                     <p className="text-muted text-sm leading-relaxed max-w-xs mx-auto mb-8">
                         Connect your Solana wallet to start sharing and earning on the decentralized canvas.
                     </p>
                     <div className="scale-110">
                         {/* The Wallet Button is in the Navbar, but we can guide them */}
-                        <p className="text-xs font-bold text-[#FF5C16] uppercase tracking-widest">Connect at the top right</p>
+                        <p className="text-xs font-bold text-[#FF6A3D] uppercase tracking-widest">Connect at the top right</p>
                     </div>
                 </div>
             </main>
@@ -75,12 +75,12 @@ export default function CreatePin() {
     }
 
     return (
-        <main className="min-h-screen pb-24 bg-white">
+        <main className="min-h-screen pb-24 bg-transparent">
             <Navbar />
 
             <div className="px-6 py-8">
                 <div className="mb-8">
-                    <h1 className="text-3xl font-serif text-[#3D065F] mb-2">Create Post</h1>
+                    <h1 className="text-3xl font-serif text-[#213453] mb-2">Create Post</h1>
                     <p className="text-sm text-muted">Share your vision with the Common People community.</p>
                 </div>
 
@@ -88,7 +88,7 @@ export default function CreatePin() {
                     {/* Image Upload Area */}
                     <div className="relative">
                         {file ? (
-                            <div className="relative aspect-square w-full rounded-[32px] overflow-hidden bg-[#F7F9FC] shadow-xl border border-[#E9EDF6]">
+                            <div className="relative aspect-square w-full rounded-[32px] overflow-hidden bg-[#FFF7F1] shadow-xl border border-[#EADDD2]">
                                 <img
                                     src={URL.createObjectURL(file)}
                                     alt="Preview"
@@ -97,17 +97,17 @@ export default function CreatePin() {
                                 <button
                                     type="button"
                                     onClick={() => setFile(null)}
-                                    className="absolute top-4 right-4 p-2.5 bg-white/90 backdrop-blur-md rounded-full text-[#3D065F] hover:text-[#FF5C16] transition-all shadow-lg"
+                                    className="absolute top-4 right-4 p-2.5 bg-white/90 backdrop-blur-md rounded-full text-[#213453] hover:text-[#FF6A3D] transition-all shadow-lg"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
                             </div>
                         ) : (
-                            <label className="flex flex-col items-center justify-center aspect-square w-full rounded-[32px] border-2 border-dashed border-[#E9EDF6] bg-[#F7F9FC] hover:bg-white hover:border-[#FF5C16]/30 transition-all cursor-pointer group shadow-inner">
-                                <div className="p-5 bg-white rounded-full mb-5 group-hover:scale-110 transition-transform shadow-md border border-[#E9EDF6]">
-                                    <ImagePlus className="w-8 h-8 text-[#FF5C16]" />
+                            <label className="flex flex-col items-center justify-center aspect-square w-full rounded-[32px] border-2 border-dashed border-[#EADDD2] bg-[#FFF7F1] hover:bg-white hover:border-[#FF6A3D]/30 transition-all cursor-pointer group shadow-inner">
+                                <div className="p-5 bg-white rounded-full mb-5 group-hover:scale-110 transition-transform shadow-md border border-[#EADDD2]">
+                                    <ImagePlus className="w-8 h-8 text-[#FF6A3D]" />
                                 </div>
-                                <span className="text-sm font-bold text-[#3D065F]">Select media from device</span>
+                                <span className="text-sm font-bold text-[#213453]">Select media from device</span>
                                 <span className="text-xs text-muted mt-2">JPG, PNG or WEBP (Standard 1:1)</span>
                                 <input
                                     type="file"
@@ -122,7 +122,7 @@ export default function CreatePin() {
                     {/* Form Fields */}
                     <div className="space-y-5">
                         <div className="relative">
-                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#3D065F]/30">
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#213453]/30">
                                 <Type className="w-5 h-5" />
                             </div>
                             <input
@@ -136,7 +136,7 @@ export default function CreatePin() {
                         </div>
 
                         <div className="relative">
-                            <div className="absolute left-4 top-4 text-[#3D065F]/30">
+                            <div className="absolute left-4 top-4 text-[#213453]/30">
                                 <AlignLeft className="w-5 h-5" />
                             </div>
                             <textarea
@@ -149,7 +149,7 @@ export default function CreatePin() {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="relative">
-                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#3D065F]/30">
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#213453]/30">
                                     <Hash className="w-5 h-5" />
                                 </div>
                                 <input
@@ -162,7 +162,7 @@ export default function CreatePin() {
                             </div>
 
                             <div className="relative">
-                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#3D065F]/30">
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#213453]/30">
                                     <DollarSign className="w-5 h-5" />
                                 </div>
                                 <input
@@ -174,7 +174,7 @@ export default function CreatePin() {
                                     onChange={(e) => setPrice(e.target.value)}
                                     className="input-premium pl-12 text-sm"
                                 />
-                                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] font-black text-[#FF5C16] bg-[#FF5C16]/5 px-2 py-1 rounded-full uppercase tracking-tighter">
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] font-black text-[#FF6A3D] bg-[#FF6A3D]/5 px-2 py-1 rounded-full uppercase tracking-tighter">
                                     USDC
                                 </div>
                             </div>
@@ -184,13 +184,13 @@ export default function CreatePin() {
                     <button
                         type="submit"
                         disabled={uploading || !file}
-                        className="w-full btn-premium py-5 text-sm font-bold uppercase tracking-widest mt-4 shadow-xl shadow-[#FF5C16]/20 disabled:opacity-30 active:scale-95"
+                        className="w-full btn-premium py-5 text-sm font-bold uppercase tracking-widest mt-4 shadow-xl shadow-[#FF6A3D]/20 disabled:opacity-30 active:scale-95"
                     >
                         {uploading ? 'Publishing to Chain...' : 'Publish Now'}
                     </button>
 
                     <p className="text-[10px] text-center text-muted px-10 leading-relaxed uppercase tracking-tighter font-bold">
-                        By sharing, you agree to our <span className="text-[#FF5C16]">Decentralized Terms of Use</span>.
+                        By sharing, you agree to our <span className="text-[#FF6A3D]">Decentralized Terms of Use</span>.
                     </p>
                 </form>
             </div>

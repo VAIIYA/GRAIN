@@ -58,7 +58,7 @@ export default function MasonryGrid({ initialPins, searchQuery }: { initialPins:
             {(hasMore || loading) && (
                 <div ref={ref} className="flex justify-center p-8">
                     {loading && (
-                        <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                        <div className="w-8 h-8 border-2 border-[#213453]/20 border-t-[#213453] rounded-full animate-spin" />
                     )}
                 </div>
             )}
