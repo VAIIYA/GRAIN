@@ -35,7 +35,7 @@ export default function RootLayout({
           <div className="ambient-orb orb-b" />
           <div className="ambient-grid" />
         </div>
-        <div className="app-container pb-24">
+        <div className="app-container pb-32">
           <SolanaProvider>
             {children}
             <MobileNav />

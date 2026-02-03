@@ -5,7 +5,6 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { upload } from '@vercel/blob/client';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
-import { savePin } from '@/lib/actions';
 import { ImagePlus, X, Hash, DollarSign, Type, AlignLeft, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 
@@ -35,19 +34,31 @@ export default function CreatePin() {
                 .map(t => t.startsWith('#') ? t : `#${t}`)
                 .slice(0, 5);
 
-            await savePin({
-                owner_id: publicKey.toBase58(),
-                image_url: newBlob.url,
-                title,
-                description,
-                price: parseFloat(price),
-                hashtags: tagList
+            const response = await fetch('/api/pins', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    owner_id: publicKey.toBase58(),
+                    image_url: newBlob.url,
+                    title,
+                    description,
+                    price: parseFloat(price),
+                    hashtags: tagList,
+                }),
             });
+
+            if (!response.ok) {
+                const payload = await response.json().catch(() => ({}));
+                const message = payload?.error || 'Failed to save post.';
+                throw new Error(message);
+            }
 
             router.push('/');
         } catch (error) {
             console.error('Upload failed:', error);
-            alert('Failed to create post');
+            alert(error instanceof Error ? error.message : 'Failed to create post');
         } finally {
             setUploading(false);
         }
@@ -75,7 +86,7 @@ export default function CreatePin() {
     }
 
     return (
-        <main className="min-h-screen pb-24 bg-transparent">
+        <main className="min-h-screen pb-32 bg-transparent">
             <Navbar />
 
             <div className="px-6 py-8">
@@ -84,7 +95,7 @@ export default function CreatePin() {
                     <p className="text-sm text-muted">Share your vision with the Common People community.</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-8">
+                <form onSubmit={handleSubmit} className="space-y-10 pb-6">
                     {/* Image Upload Area */}
                     <div className="relative">
                         {file ? (
@@ -120,7 +131,7 @@ export default function CreatePin() {
                     </div>
 
                     {/* Form Fields */}
-                    <div className="space-y-5">
+                    <div className="space-y-6">
                         <div className="relative">
                             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#213453]/30">
                                 <Type className="w-5 h-5" />
@@ -147,7 +158,7 @@ export default function CreatePin() {
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="relative">
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#213453]/30">
                                     <Hash className="w-5 h-5" />
