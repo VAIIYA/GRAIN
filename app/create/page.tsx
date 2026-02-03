@@ -6,6 +6,8 @@ import { upload } from '@vercel/blob/client';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import { savePin } from '@/lib/actions';
+import { ImagePlus, X, Hash, DollarSign, Type, AlignLeft } from 'lucide-react';
+import Image from 'next/image';
 
 export default function CreatePin() {
     const { publicKey } = useWallet();
@@ -29,7 +31,8 @@ export default function CreatePin() {
             });
 
             const tagList = hashtags.split(' ')
-                .filter(t => t.startsWith('#'))
+                .filter(t => t.startsWith('#') || t.length > 0)
+                .map(t => t.startsWith('#') ? t : `#${t}`)
                 .slice(0, 5);
 
             await savePin({
@@ -44,7 +47,7 @@ export default function CreatePin() {
             router.push('/');
         } catch (error) {
             console.error('Upload failed:', error);
-            alert('failed to create pin');
+            alert('Failed to create post');
         } finally {
             setUploading(false);
         }
@@ -54,96 +57,133 @@ export default function CreatePin() {
         return (
             <main className="min-h-screen">
                 <Navbar />
-                <div className="flex flex-col items-center justify-center h-[80vh] gap-4">
-                    <h1 className="text-2xl font-bold">Please connect your wallet to create a Pin</h1>
+                <div className="flex flex-col items-center justify-center pt-32 px-8 text-center">
+                    <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mb-6">
+                        <DollarSign className="w-10 h-10 text-muted" />
+                    </div>
+                    <h1 className="text-xl font-bold mb-2">Connect Wallet</h1>
+                    <p className="text-muted text-sm max-w-xs mx-auto">
+                        Please connect your Solana wallet to share your thoughts with the world.
+                    </p>
                 </div>
             </main>
         );
     }
 
     return (
-        <main className="min-h-screen">
+        <main className="min-h-screen pb-24">
             <Navbar />
-            <div className="max-w-4xl mx-auto px-4 py-12">
-                <div className="glass p-8 rounded-[32px] flex flex-col md:flex-row gap-8">
-                    <div className="flex-1">
-                        <div className="aspect-[2/3] bg-gray-100 rounded-[24px] border-2 border-dashed border-gray-300 flex flex-col items-center justify-center p-4 cursor-pointer hover:bg-gray-200 transition-colors overflow-hidden relative">
-                            {file ? (
-                                <img src={URL.createObjectURL(file)} className="w-full h-full object-cover rounded-[20px]" />
-                            ) : (
-                                <>
-                                    <div className="w-12 h-12 bg-gray-300 rounded-full mb-2" />
-                                    <p className="text-sm text-gray-500 font-medium">Click to upload</p>
-                                </>
-                            )}
-                            <input
-                                type="file"
-                                className="absolute inset-0 opacity-0 cursor-pointer"
-                                onChange={(e) => setFile(e.target.files?.[0] || null)}
-                                accept="image/*"
-                            />
-                        </div>
+
+            <div className="px-4 py-6">
+                <h1 className="text-2xl font-black mb-6">NEW POST</h1>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Image Upload Area */}
+                    <div className="relative">
+                        {file ? (
+                            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-secondary">
+                                <img
+                                    src={URL.createObjectURL(file)}
+                                    alt="Preview"
+                                    className="w-full h-full object-cover"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setFile(null)}
+                                    className="absolute top-3 right-3 p-2 bg-black/50 backdrop-blur-md rounded-full text-white hover:bg-black/70 transition-colors"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+                        ) : (
+                            <label className="flex flex-col items-center justify-center aspect-square w-full rounded-2xl border-2 border-dashed border-border bg-secondary hover:bg-white/5 transition-colors cursor-pointer group">
+                                <div className="p-4 bg-black rounded-full mb-4 group-hover:scale-110 transition-transform">
+                                    <ImagePlus className="w-8 h-8 text-white" />
+                                </div>
+                                <span className="text-sm font-bold">Select from device</span>
+                                <span className="text-xs text-muted mt-1">High quality images recommended</span>
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+                                    accept="image/*"
+                                />
+                            </label>
+                        )}
                     </div>
 
-                    <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-6">
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold text-gray-600 ml-1">Title</label>
+                    {/* Form Fields */}
+                    <div className="space-y-4">
+                        <div className="relative">
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted">
+                                <Type className="w-5 h-5" />
+                            </div>
                             <input
                                 type="text"
-                                placeholder="Add a title"
+                                placeholder="Write a title..."
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="text-3xl font-bold border-b-2 border-gray-200 focus:border-[#f6851b] outline-none py-2 transition-colors bg-transparent"
+                                className="input-premium pl-12"
                                 required
                             />
                         </div>
 
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold text-gray-600 ml-1">Description</label>
+                        <div className="relative">
+                            <div className="absolute left-4 top-4 text-muted">
+                                <AlignLeft className="w-5 h-5" />
+                            </div>
                             <textarea
-                                placeholder="Tell everyone what your Pin is about"
+                                placeholder="Describe your post..."
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                className="text-lg border-b-2 border-gray-200 focus:border-[#f6851b] outline-none py-2 transition-colors bg-transparent resize-none h-24"
+                                className="input-premium pl-12 min-h-[120px] py-4"
                             />
                         </div>
 
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold text-gray-600 ml-1">Hashtags (Max 5, space separated, start with #)</label>
+                        <div className="relative">
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted">
+                                <Hash className="w-5 h-5" />
+                            </div>
                             <input
                                 type="text"
-                                placeholder="#art #design #future"
+                                placeholder="#art #solana #future"
                                 value={hashtags}
                                 onChange={(e) => setHashtags(e.target.value)}
-                                className="text-lg border-b-2 border-gray-200 focus:border-[#f6851b] outline-none py-2 transition-colors bg-transparent"
+                                className="input-premium pl-12"
                             />
                         </div>
 
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold text-gray-600 ml-1">Price (USDC)</label>
-                            <div className="flex items-center gap-3">
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
-                                    className="text-xl font-semibold border-b-2 border-gray-200 focus:border-[#f6851b] outline-none py-2 transition-colors bg-transparent w-32"
-                                />
-                                <span className="text-gray-500 font-bold">USDC</span>
+                        <div className="relative">
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted">
+                                <DollarSign className="w-5 h-5" />
                             </div>
-                            <p className="text-xs text-gray-400 mt-1">Set to 0.00 for public/free posts.</p>
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                placeholder="Price in USDC (0 for free)"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                className="input-premium pl-12"
+                            />
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted bg-white/5 px-2 py-1 rounded">
+                                USDC
+                            </div>
                         </div>
+                    </div>
 
-                        <button
-                            type="submit"
-                            disabled={uploading || !file}
-                            className="btn-primary w-full py-4 text-lg mt-auto disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {uploading ? 'Uploading...' : 'Create Pin'}
-                        </button>
-                    </form>
-                </div>
+                    <button
+                        type="submit"
+                        disabled={uploading || !file}
+                        className="w-full btn-premium py-4 text-sm font-bold mt-4 disabled:opacity-50"
+                    >
+                        {uploading ? 'SHARING...' : 'SHARE POST'}
+                    </button>
+
+                    <p className="text-[10px] text-center text-muted px-8">
+                        By sharing, you agree to our Terms of Use and confirm you own the rights to this content.
+                    </p>
+                </form>
             </div>
         </main>
     );

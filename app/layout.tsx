@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { SolanaProvider } from "@/components/SolanaProvider";
+import MobileNav from "@/components/MobileNav";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -10,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "GRAIN | The Everything Canvas",
-  description: "Discover, create, and share visual ideas on the decentralized Pinterest. Built with Web3 technology.",
+  title: "COMMON PEOPLE",
+  description: "By the people, for the people. A decentralized visual platform.",
 };
 
 export default function RootLayout({
@@ -21,10 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} font-sans antialiased bg-black text-white`}>
-        <SolanaProvider>
-          {children}
-        </SolanaProvider>
+      <body className={`${inter.variable} font-sans antialiased bg-black text-white min-h-screen`}>
+        <div className="app-container pb-20">
+          <SolanaProvider>
+            {children}
+            <MobileNav />
+          </SolanaProvider>
+        </div>
       </body>
     </html>
   );

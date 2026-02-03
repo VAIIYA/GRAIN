@@ -1,9 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { Heart, MessageSquare, Download, Lock } from 'lucide-react';
+import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Lock, CheckCircle2 } from 'lucide-react';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { PublicKey } from '@solana/web3.js';
 import { createUSDCPaymentTransaction, PLATFORM_WALLET } from '@/lib/solana-pay';
 import { unlockPin } from '@/lib/actions';
 import { useState } from 'react';
@@ -12,10 +11,13 @@ interface Pin {
     id: string;
     image_url: string;
     title: string;
+    description?: string;
     owner_name: string;
     owner_image?: string;
+    owner_id: string;
     price?: number;
     isUnlocked?: boolean;
+    created_at?: string;
 }
 
 export default function PinCard({ pin }: { pin: Pin }) {
@@ -23,6 +25,7 @@ export default function PinCard({ pin }: { pin: Pin }) {
     const { publicKey, sendTransaction } = useWallet();
     const [unlocking, setUnlocking] = useState(false);
     const [localUnlocked, setLocalUnlocked] = useState(pin.isUnlocked);
+    const [liked, setLiked] = useState(false);
 
     const isLocked = (pin.price ?? 0) > 0 && !localUnlocked;
 
@@ -34,8 +37,6 @@ export default function PinCard({ pin }: { pin: Pin }) {
 
         setUnlocking(true);
         try {
-            // In a real app, recipient would be the pin owner
-            // For now, we use a platform wallet for testing
             const transaction = await createUSDCPaymentTransaction(
                 connection,
                 publicKey,
@@ -46,10 +47,8 @@ export default function PinCard({ pin }: { pin: Pin }) {
             const signature = await sendTransaction(transaction, connection);
             await connection.confirmTransaction(signature, 'confirmed');
 
-            // Save unlock to database
             await unlockPin(publicKey.toBase58(), pin.id);
             setLocalUnlocked(true);
-            alert('Content unlocked!');
         } catch (error) {
             console.error('Unlock failed:', error);
             alert('Unlock failed. Please make sure you have enough USDC.');
@@ -59,72 +58,107 @@ export default function PinCard({ pin }: { pin: Pin }) {
     };
 
     return (
-        <div className="pin-card group relative">
-            <div className="relative overflow-hidden rounded-2xl">
-                <div className={isLocked ? 'blur-2xl scale-110 grayscale transition-all duration-500' : 'transition-all duration-500'}>
+        <article className="post-card animate-fade-in">
+            {/* Header */}
+            <div className="flex items-center justify-between p-3">
+                <div className="flex items-center gap-3">
+                    <div className="relative w-9 h-9">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-[#f09433] to-[#bc1888] rounded-full p-[1.5px]">
+                            <div className="bg-black rounded-full h-full w-full flex items-center justify-center overflow-hidden border-[1.5px] border-black">
+                                {pin.owner_image ? (
+                                    <Image src={pin.owner_image} alt={pin.owner_name} width={36} height={36} className="object-cover" />
+                                ) : (
+                                    <div className="w-full h-full bg-secondary flex items-center justify-center text-[10px] font-bold text-muted">
+                                        {pin.owner_name?.slice(0, 2).toUpperCase()}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div className="flex items-center gap-1">
+                            <span className="text-sm font-bold text-white hover:underline cursor-pointer">{pin.owner_name || 'Anonymous'}</span>
+                            <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-500" />
+                        </div>
+                        <p className="text-[10px] text-muted">Solana Chain • 2h ago</p>
+                    </div>
+                </div>
+                <button className="btn-ghost p-1">
+                    <MoreHorizontal className="w-5 h-5 text-muted" />
+                </button>
+            </div>
+
+            {/* Content (Image) */}
+            <div className="post-image-container group">
+                <div className={isLocked ? 'blur-2xl scale-110 grayscale transition-all duration-700' : 'transition-all duration-700'}>
                     <Image
                         src={pin.image_url}
                         alt={pin.title}
-                        width={400}
-                        height={600}
-                        className="w-full h-auto object-cover"
+                        width={500}
+                        height={500}
+                        className="post-image"
+                        priority={false}
                     />
                 </div>
 
-                {/* Lock Overlay */}
                 {isLocked && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 z-10 p-4 text-center">
-                        <div className="glass p-6 rounded-[32px] shadow-2xl flex flex-col items-center gap-3 max-w-[200px]">
-                            <div className="w-12 h-12 bg-[#f6851b] rounded-full flex items-center justify-center text-white">
-                                <Lock className="w-6 h-6" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-6">
+                        <div className="glass p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-[240px] border border-white/10">
+                            <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center text-white backdrop-blur-md">
+                                <Lock className="w-7 h-7" />
                             </div>
-                            <p className="font-bold text-gray-900 text-sm">Exclusive Content</p>
+                            <div className="text-center">
+                                <h4 className="text-lg font-bold text-white">Exclusive Post</h4>
+                                <p className="text-xs text-muted mt-1 px-2">Support the creator to unlock this content</p>
+                            </div>
                             <button
                                 onClick={handleUnlock}
                                 disabled={unlocking}
-                                className="btn-primary w-full py-2.5 text-xs font-bold leading-none disabled:opacity-50"
+                                className="w-full btn-premium leading-none text-sm py-3 disabled:opacity-50"
                             >
-                                {unlocking ? 'Unlocking...' : `Unlock for ${pin.price} USDC`}
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* Hover Overlay (for unlocked/free pins) */}
-                {!isLocked && (
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-between p-3 z-0">
-                        <div className="flex justify-end">
-                            <button className="btn-primary py-2 px-4 text-sm font-bold">Save</button>
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                            <div className="flex gap-2">
-                                <button className="p-2 bg-white/90 hover:bg-white rounded-full transition-colors">
-                                    <Heart className="w-4 h-4 text-gray-800" />
-                                </button>
-                                <button className="p-2 bg-white/90 hover:bg-white rounded-full transition-colors">
-                                    <MessageSquare className="w-4 h-4 text-gray-800" />
-                                </button>
-                            </div>
-                            <button className="p-2 bg-white/90 hover:bg-white rounded-full transition-colors">
-                                <Download className="w-4 h-4 text-gray-800" />
+                                {unlocking ? 'Verifying...' : `Unlock for ${pin.price} USDC`}
                             </button>
                         </div>
                     </div>
                 )}
             </div>
 
-            <div className="mt-3 px-2">
-                <h3 className="font-semibold text-white text-sm truncate">{pin.title}</h3>
-                <div className="flex items-center gap-2 mt-2">
-                    {pin.owner_image ? (
-                        <Image src={pin.owner_image} alt={pin.owner_name} width={28} height={28} className="rounded-full border border-white/10" />
-                    ) : (
-                        <div className="w-7 h-7 bg-gradient-to-br from-[#f6851b]/20 to-[#e2761b]/20 rounded-full border border-white/10" />
-                    )}
-                    <span className="text-xs text-gray-400 hover:text-[#f6851b] cursor-pointer font-medium transition-colors">{pin.owner_name}</span>
+            {/* Actions */}
+            <div className="p-3">
+                <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-4">
+                        <button onClick={() => setLiked(!liked)} className={`${liked ? 'text-red-500' : 'text-white'} transition-colors`}>
+                            <Heart className={`w-7 h-7 ${liked ? 'fill-current' : ''}`} />
+                        </button>
+                        <button className="text-white hover:text-muted">
+                            <MessageCircle className="w-7 h-7" />
+                        </button>
+                        <button className="text-white hover:text-muted">
+                            <Send className="w-7 h-7" />
+                        </button>
+                    </div>
+                    <button className="text-white hover:text-muted">
+                        <Bookmark className="w-7 h-7" />
+                    </button>
                 </div>
+
+                {/* Likes/Status */}
+                <p className="text-sm font-bold text-white mb-2">1,240 likes</p>
+
+                {/* Caption */}
+                <div className="space-y-1">
+                    <p className="text-sm leading-relaxed">
+                        <span className="font-bold mr-2">{pin.owner_name || 'Anonymous'}</span>
+                        {pin.title}
+                    </p>
+                    {pin.description && (
+                        <p className="text-sm text-muted line-clamp-2">{pin.description}</p>
+                    )}
+                </div>
+
+                {/* Date */}
+                <p className="text-[10px] text-muted uppercase mt-3 tracking-wider font-medium">February 3</p>
             </div>
-        </div>
+        </article>
     );
 }
